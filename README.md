@@ -155,7 +155,6 @@ Update-Database
 
 ## 👨‍💻 Author
 
-Your Name
 Rahul Jatve
 
 ## ⭐ If you like this project
