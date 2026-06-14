@@ -14,7 +14,10 @@ namespace Task_Management_System.Controllers
         private readonly JwtService _jwt;
         private readonly PasswordService _password;
 
-        public AuthController(IUserRepository userRepo, JwtService jwt, PasswordService password)
+        public AuthController(
+            IUserRepository userRepo,
+            JwtService jwt,
+            PasswordService password)
         {
             _userRepo = userRepo;
             _jwt = jwt;
@@ -24,6 +27,16 @@ namespace Task_Management_System.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
+            var existingUser = await _userRepo.GetUser(dto.Username);
+
+            if (existingUser != null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Username already exists."
+                });
+            }
+
             var user = new User
             {
                 Username = dto.Username,
@@ -32,7 +45,11 @@ namespace Task_Management_System.Controllers
             };
 
             await _userRepo.AddUser(user);
-            return Ok("User Registered Successfully");
+
+            return Ok(new
+            {
+                Message = "User Registered Successfully"
+            });
         }
 
         [HttpPost("login")]
@@ -42,10 +59,19 @@ namespace Task_Management_System.Controllers
 
             if (user == null ||
                 user.PasswordHash != _password.HashPassword(dto.Password))
-                return Unauthorized();
+            {
+                return Unauthorized(new
+                {
+                    Message = "Invalid username or password."
+                });
+            }
 
             var token = _jwt.GenerateToken(user);
-            return Ok(new { token });
+
+            return Ok(new
+            {
+                Token = token
+            });
         }
     }
 }

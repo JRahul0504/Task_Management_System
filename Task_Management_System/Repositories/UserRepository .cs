@@ -8,12 +8,16 @@ namespace Task_Management_System.Repositories
     {
         private readonly AppDbContext _context;
 
-        public UserRepository(AppDbContext context )
+        public UserRepository(AppDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
-        public async Task<User> GetUser(string username)
-       => await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
+
+        public async Task<User?> GetUser(string username)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(x => x.Username == username);
+        }
 
         public async Task AddUser(User user)
         {
