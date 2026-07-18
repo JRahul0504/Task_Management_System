@@ -24,7 +24,15 @@ namespace Task_Management_System
             builder.Services.AddScoped<JwtService>();
             builder.Services.AddScoped<PasswordService>();
 
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AngularPolicy", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
 
 
             // Add services to the container.
@@ -92,6 +100,7 @@ namespace Task_Management_System
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
+            app.UseCors("AngularPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 

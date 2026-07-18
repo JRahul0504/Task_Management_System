@@ -8,5 +8,6 @@ namespace Task_Management_System.Repositories
         Task<TaskItem> GetById(int id);
         Task Add(TaskItem task);
         Task Update(int id, TaskItem task);
+        Task Delete(int id);
     }
 }

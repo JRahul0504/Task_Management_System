@@ -46,6 +46,7 @@ namespace Task_Management_System.Controllers
             {
                 Title = dto.Title,
                 IsCompleted = dto.IsCompleted,
+                Priority = dto.Priority,
                 UserId = userId
             };
 
@@ -61,6 +62,7 @@ namespace Task_Management_System.Controllers
             {
                 Title = dto.Title,
                 IsCompleted = dto.IsCompleted,
+                Priority = dto.Priority,
                 UserId = userId
             };
             await _repo.Update(id, updatedTask);
@@ -69,9 +71,14 @@ namespace Task_Management_System.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok("Only Admin Can Delete the Task");
+            await _repo.Delete(id);
+
+            return Ok(new
+            {
+                Message = "Task Deleted Successfully"
+            });
         }
     }
 }

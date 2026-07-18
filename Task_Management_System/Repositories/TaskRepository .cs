@@ -46,6 +46,18 @@ namespace Task_Management_System.Repositories
             {
                 existingTask.Title = updatedtask.Title;
                 existingTask.IsCompleted = updatedtask.IsCompleted;
+                existingTask.Priority = updatedtask.Priority;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Delete(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+
+            if (task != null)
+            {
+                _context.Tasks.Remove(task);
                 await _context.SaveChangesAsync();
             }
         }

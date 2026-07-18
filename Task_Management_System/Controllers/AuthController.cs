@@ -41,7 +41,7 @@ namespace Task_Management_System.Controllers
             {
                 Username = dto.Username,
                 PasswordHash = _password.HashPassword(dto.Password),
-                Role = "User"
+                Role = dto.Role
             };
 
             await _userRepo.AddUser(user);
